@@ -9,10 +9,11 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 22.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
+      - run: npm install pnpm
       - run: pnpm ci
       - run: pnpm run build
       - name: Upload static files as artifact
