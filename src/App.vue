@@ -27,7 +27,11 @@ const startStopText = computed(() => (running.value ? 'Stop' : 'Start'))
 
 const middleCharInfo = computed(() => {
   const word = currentWord.value
-  if (word === 'No Word' || word.length === 0) {
+  if (word === undefined) {
+    return { before: '', middle: '', after: '' }
+  }
+
+  if ( word === 'No Word' || word.length === 0) {
     return { before: '', middle: '', after: '' }
   }
   const length = word.length
@@ -60,10 +64,14 @@ function toggleRunning() {
   running.value = !running.value
 }
 
-let interval = null
+let interval : number | null = null
 const wpm = computed(() => (60 / speed.value) * 1000)
 
 function stopInterval() {
+  if (interval === undefined || interval === null) {
+    return
+  }
+
   clearInterval(interval)
   interval = null
 }
@@ -88,7 +96,7 @@ watch(running, (isRunning) => {
 
 <template>
   <div id="container">
-    <h1 :style="{ transform: currentWord.length % 2 === 0 ? 'translateX(0.25em)' : 'translateX(0em)' }">{{ middleCharInfo.before }}<strong style="color: red;">{{ middleCharInfo.middle }}</strong>{{ middleCharInfo.after }}</h1>
+    <h1 :style="{ transform: currentWord!.length % 2 === 0 ? 'translateX(0.25em)' : 'translateX(0em)' }">{{ middleCharInfo.before }}<strong style="color: red;">{{ middleCharInfo.middle }}</strong>{{ middleCharInfo.after }}</h1>
     <textarea v-model="message" cols="70" rows="20">
     </textarea>
     <div id="buttonContainer">
