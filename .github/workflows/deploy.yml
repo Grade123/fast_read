@@ -13,7 +13,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24.x
-      - run: npm install pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - run: pnpm run build
       - name: Upload static files as artifact
         uses: actions/upload-pages-artifact@v3 
